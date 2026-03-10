@@ -6,6 +6,280 @@
   <title>Cybersecurity Awareness</title>
   <meta name="description" content="Learn cybersecurity basics, common threats, tips to protect yourself, and test your knowledge with an interactive quiz." />
 </head>
+
+<style>    
+  :root{
+  --bg: #0c1220;
+  --bg-alt: #101830;
+  --text: #e8edff;
+  --muted: #a6b0d8;
+  --accent: #5ac8fa;      /* cyan */
+  --accent-2: #7c5cff;    /* violet */
+  --card: #141c36;
+  --border: #21305e;
+  --danger: #ff5c7a;
+  --ok: #35d0a3;
+  --shadow: 0 12px 30px rgba(0,0,0,.25);
+}
+
+*{ box-sizing: border-box; }
+html,body{
+  margin:0; padding:0; font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text); background: radial-gradient(1200px 800px at 80% -10%, #182453 10%, transparent 60%), var(--bg);
+  scroll-behavior: smooth;
+}
+
+.container{ width: min(1120px, 92%); margin: 0 auto; }
+
+/* Header */
+.site-header{
+  position: sticky; top:0; z-index: 50;
+  background: rgba(12,18,32,.7); backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.header-inner{ display:flex; align-items:center; justify-content:space-between; padding: 14px 0; }
+.logo{ color: var(--text); font-weight: 800; text-decoration: none; letter-spacing:.2px; }
+.nav{ display:flex; gap: 18px; }
+.nav a{ color: var(--muted); text-decoration: none; padding: 8px 10px; border-radius:8px; }
+.nav a:hover{ color: var(--text); background: rgba(90,200,250,.12); }
+.hamburger{ display:none; font-size: 22px; background:none; color: var(--text); border:1px solid var(--border); padding:6px 10px; border-radius:8px; }
+
+.hero{ padding: 72px 0 48px; }
+.hero-inner{ display:grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; align-items:center; }
+.hero h1{ font-size: clamp(28px, 5vw, 48px); margin:0 0 8px; }
+.subtitle{ color: var(--muted); margin: 0 0 20px; max-width: 50ch; }
+.cta-group{ display:flex; gap:12px; flex-wrap: wrap; }
+.btn{ display:inline-block; text-decoration:none; padding:10px 16px; border-radius:10px; border:1px solid var(--border); transition: .2s transform ease, .2s background ease; }
+.btn:hover{ transform: translateY(-2px); }
+.btn.primary{ background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:white; border: none; }
+.btn.ghost{ color: var(--text); background: transparent; }
+
+.hero-art{ display:flex; justify-content:center; align-items:center; }
+.shield{
+  width: clamp(220px, 38vw, 340px); aspect-ratio: 1/1.1;
+  background: radial-gradient(circle at 30% 30%, #8fdcff, #5ac8fa 55%, #1d87b2 90%);
+  border-radius: 42% 42% 16% 16% / 34% 34% 60% 60%;
+  position: relative; box-shadow: var(--shadow); animation: float 6s ease-in-out infinite;
+}
+.lock-hole{
+  position: absolute; inset: 40% 36% 34% 36%;
+  background: var(--bg); border-radius: 16px; box-shadow: inset 0 0 0 6px #bfeaff;
+}
+@keyframes float{
+  0%,100%{ transform: translateY(0) rotate(0deg); }
+  50%{ transform: translateY(-10px) rotate(2deg); }
+}
+
+/* Sections */
+.section{ padding: 64px 0; }
+.section.alt{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0) 40%), var(--bg-alt); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.section h2{ font-size: clamp(22px, 3.2vw, 32px); margin:0 0 18px; }
+.section p{ color: var(--text); opacity:.95; }
+
+.grid.two{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+.info-card{
+  background: var(--card); border:1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: var(--shadow);
+}
+.checklist{ padding-left: 18px; }
+.checklist li{ margin: 8px 0; }
+.checklist span{ color: #d7e4ff; font-weight: 600; }
+
+/* Accordion */
+.accordion{ display:grid; gap: 10px; }
+.acc-item{
+  width: 100%; text-align:left; background: #101a3b; color: var(--text);
+  border:1px solid var(--border); border-radius: 12px; padding: 12px 14px; display:flex; align-items:center; justify-content:space-between;
+  cursor:pointer;
+}
+.acc-item:focus{ outline: 2px solid #5ac8fa55; }
+.acc-panel{
+  display:none; background: #0d1633; border:1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-top: -6px;
+}
+.acc-panel.open{ display:block; }
+
+/* Password tool */
+.password-tool{ margin-top: 10px; }
+.pwd-row{ display:flex; gap: 8px; }
+input[type="password"], input[type="text"], textarea{
+  width:100%; padding: 10px 12px; border-radius: 10px; border:1px solid var(--border); background: #0a1230; color: var(--text);
+}
+input:focus, textarea:focus{ outline: 2px solid #5ac8fa55; border-color: #5ac8fa; }
+.btn.tiny{ padding: 8px 10px; font-size: 13px; }
+.strength{
+  margin-top: 8px; width: 100%; height: 10px; border-radius: 999px;
+  background: #0a1430; border:1px solid var(--border);
+}
+.bar{
+  height: 100%; width: 0%; border-radius: 999px;
+  background: linear-gradient(90deg, #ff5c7a, #ffb86b, #f7df1e, #35d0a3); transition: width .25s ease;
+}
+.hint{ color: var(--muted); font-size: 13px; margin:8px 0 4px; }
+.tips{ margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
+
+/* Quiz */
+.quiz fieldset{ border:1px solid var(--border); border-radius: 12px; padding: 10px 14px; margin: 12px 0; background:#0f1838; }
+.quiz label{ display:block; margin: 8px 0; }
+.quiz-result{ margin-top: 12px; font-weight: 700; }
+.quiz-result.ok{ color: var(--ok); }
+.quiz-result.warn{ color: #f7df1e; }
+.quiz-result.bad{ color: var(--danger); }
+
+/* Resources */
+.resources{ padding-left: 18px; }
+.resources li{ margin: 10px 0; }
+.resources a{ color: #bde7ff; text-decoration: none; }
+.resources a:hover{ text-decoration: underline; }
+
+.site-footer{ border-top: 1px solid var(--border); padding: 24px 0; color: var(--muted); text-align:center; }
+
+/* Responsive */
+@media (max-width: 900px){
+  .hero-inner{ grid-template-columns: 1fr; text-align:center; }
+  .cta-group{ justify-content:center; }
+}
+@media (max-width: 720px){
+  .nav{ display:none; position: absolute; top: 58px; right: 4%; background: var(--bg-alt); padding: 10px; border:1px solid var(--border); border-radius:10px; flex-direction: column; width: 220px; }
+  .nav a{ padding:10px 12px; }
+  .nav.open{ display:flex; }
+  .hamburger{ display:inline-block; }
+  .grid.two{ grid-template-columns: 1fr; }
+}
+``
+</style>
+
+<script>
+/* Mobile nav toggle */
+const hamburger = document.getElementById('hamburger');
+const nav = document.getElementById('nav');
+if (hamburger && nav) {
+  hamburger.addEventListener('click', () => {
+    const isOpen = nav.classList.toggle('open');
+    hamburger.setAttribute('aria-expanded', String(isOpen));
+  });
+}
+
+/* Accordion behavior */
+const accButtons = document.querySelectorAll('.acc-item');
+accButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    const panel = btn.nextElementSibling;
+    panel.classList.toggle('open');
+    // Toggle +/-
+    const icon = btn.querySelector('.acc-icon');
+    if (icon) icon.textContent = panel.classList.contains('open') ? '−' : '+';
+  });
+});
+
+/* Password strength meter (local only) */
+const pwd = document.getElementById('pwd');
+const bar = document.getElementById('strengthBar');
+const tips = document.getElementById('pwdTips');
+const togglePwd = document.getElementById('togglePwd');
+
+function assessPassword(s) {
+  // Basic, privacy-preserving heuristic
+  let score = 0;
+  const suggestions = [];
+
+  if (!s) return {score, suggestions: ['Use a long passphrase, e.g., 3–4 random words.']};
+
+  const lengthBonus = Math.min(4, Math.floor(s.length / 4)); // 0..4
+  score += lengthBonus;
+
+  if (/[a-z]/.test(s)) score++;
+  else suggestions.push('Add lowercase letters (a–z).');
+
+  if (/[A-Z]/.test(s)) score++;
+  else suggestions.push('Add uppercase letters (A–Z).');
+
+  if (/\d/.test(s)) score++;
+  else suggestions.push('Add numbers (0–9).');
+
+  if (/[^A-Za-z0-9]/.test(s)) score++;
+  else suggestions.push('Add symbols (!@#$...).');
+
+  // Penalty for common patterns
+  if (/(1234|password|qwerty|abc)/i.test(s)) {
+    score = Math.max(0, score - 2);
+    suggestions.push('Avoid common patterns like "1234" or "password".');
+  }
+  if (/(.)\1{2,}/.test(s)) {
+    suggestions.push('Avoid repeating the same character many times.');
+  }
+
+  // Normalize to 0..10
+  score = Math.min(10, score);
+  return {score, suggestions};
+}
+
+function renderStrength(score, suggestions) {
+  const pct = `${score * 10}%`;
+  bar.style.width = pct;
+
+  tips.innerHTML = '';
+  const show = suggestions.slice(0, 3);
+  show.forEach(t => {
+    const li = document.createElement('li');
+    li.textContent = t;
+    tips.appendChild(li);
+  });
+}
+
+if (pwd && bar && tips) {
+  pwd.addEventListener('input', (e) => {
+    const {score, suggestions} = assessPassword(e.target.value);
+    renderStrength(score, suggestions);
+  });
+}
+
+if (togglePwd && pwd) {
+  togglePwd.addEventListener('click', () => {
+    const showing = pwd.type === 'text';
+    pwd.type = showing ? 'password' : 'text';
+    togglePwd.textContent = showing ? 'Show' : 'Hide';
+  });
+}
+
+/* Quiz */
+const quizForm = document.getElementById('quizForm');
+const quizResult = document.getElementById('quizResult');
+if (quizForm && quizResult) {
+  quizForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    let score = 0;
+    const answers = {
+      q1: 'c',
+      q2: 'b',
+      q3: 'b'
+    };
+
+    Object.keys(answers).forEach(q => {
+      const picked = quizForm.querySelector(`input[name="${q}"]:checked`);
+      if (picked && picked.value === answers[q]) score++;
+    });
+
+    const total = Object.keys(answers).length;
+    const pct = Math.round((score / total) * 100);
+
+    quizResult.classList.remove('ok', 'warn', 'bad');
+    if (pct === 100) {
+      quizResult.classList.add('ok');
+      quizResult.textContent = `Perfect! ${score}/${total} (${pct}%). Stay vigilant!`;
+    } else if (pct >= 67) {
+      quizResult.classList.add('warn');
+      quizResult.textContent = `Good job: ${score}/${total} (${pct}%). Review the tips above to improve.`;
+    } else {
+      quizResult.classList.add('bad');
+      quizResult.textContent = `Keep learning: ${score}/${total} (${pct}%). Revisit threats & protection sections.`;
+    }
+  });
+}
+
+/* Footer year */
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
 <body>
   <!-- Header / Nav -->
   <header class="site-header">
