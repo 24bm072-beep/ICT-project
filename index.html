@@ -1,7 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Cyber Safety — Single File (Home + 4 Topics with external buttons) -->
+  <!--
+    Cyber Safety — Single File (Home + 4 Topics with external buttons)
+    Pages (hash-routed): #home, #phishing, #malware, #social, #wifi
+  -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cyber Safety — Learn • Spot • Protect</title>
@@ -9,66 +12,115 @@
 
   <style>
     :root{
-      --bg: #f8fafc; --surface: #ffffff; --surface-alt: #f1f5f9;
-      --text: #0f172a; --muted: #475569; --border: #e2e8f0;
-      --primary: #0ea5e9; --secondary: #8b5cf6; --ok: #16a34a;
-      --radius: 12px; --radius-lg: 16px; --shadow: 0 12px 30px rgba(2, 6, 23, .08);
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-alt: #f1f5f9;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --primary: #0ea5e9;
+      --secondary: #8b5cf6;
+      --ok: #16a34a;
+
+      --radius: 12px;
+      --radius-lg: 16px;
+      --shadow: 0 12px 30px rgba(2, 6, 23, .08);
       --maxw: 1120px;
     }
+
     * { box-sizing: border-box; }
-    html, body { margin:0; font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif; color:var(--text); background:var(--bg); line-height:1.6; }
+    html, body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    img, svg { max-width: 100%; height: auto; display: block; }
     a { color: inherit; text-decoration: none; }
-    img, svg { max-width:100%; height:auto; display:block; }
-    .container { width:min(var(--maxw), 92%); margin:0 auto; }
+    .container { width: min(var(--maxw), 92%); margin: 0 auto; }
     .muted { color: var(--muted); }
 
-    /* Header */
-    .site-header { position: sticky; top:0; z-index:50; background: rgba(255,255,255,.85); backdrop-filter: blur(8px); border-bottom:1px solid var(--border); }
-    .header-inner { display:flex; align-items:center; justify-content:space-between; padding:12px 0; }
-    .brand { font-weight: 800; letter-spacing:.2px; padding:6px 8px; border-radius:8px; }
-    .nav { display:flex; gap:10px; flex-wrap: wrap; }
-    .nav a { color:var(--muted); padding:8px 10px; border-radius:8px; transition: background .2s, color .2s, transform .2s, border-color .2s; }
-    .nav a:hover { color:var(--text); background:var(--surface-alt); transform: translateY(-1px); }
-    .nav a.active { color: var(--text); background:#e8f5ff; border:1px solid #bae6fd; }
+    /* Header & Nav */
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 12px 0;
+    }
+    .brand {
+      font-weight: 800; letter-spacing:.2px;
+      padding: 6px 8px; border-radius: 8px;
+    }
+    .nav { display:flex; gap: 10px; flex-wrap: wrap; }
+    .nav a {
+      color: var(--muted);
+      padding: 8px 10px; border-radius: 8px;
+      transition: background .2s ease, color .2s ease, transform .2s ease, border-color .2s ease;
+    }
+    .nav a:hover { color: var(--text); background: var(--surface-alt); transform: translateY(-1px); }
+    .nav a.active { color: var(--text); background: #e8f5ff; border: 1px solid #bae6fd; }
 
-    /* Routing (hash pages) */
+    /* Pages (hash routing with :target) */
     .pages { position: relative; }
-    .page { display:none; animation: fade .18s ease-in; }
-    @keyframes fade { from{opacity:0; transform: translateY(2px);} to{opacity:1; transform: translateY(0);} }
-    .page-home { display:block; }
-    #home:target ~ .pages .page-home { display:block; }
-    #phishing:target ~ .pages .page-phishing { display:block; }
-    #malware:target  ~ .pages .page-malware  { display:block; }
-    #social:target   ~ .pages .page-social   { display:block; }
-    #wifi:target     ~ .pages .page-wifi     { display:block; }
+    .page { display: none; animation: fade .18s ease-in; }
+    @keyframes fade { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
+    .page-home { display: block; }
+
+    #home:target     ~ .pages .page-home { display: block; }
+    #phishing:target ~ .pages .page-phishing { display: block; }
+    #malware:target  ~ .pages .page-malware  { display: block; }
+    #social:target   ~ .pages .page-social   { display: block; }
+    #wifi:target     ~ .pages .page-wifi     { display: block; }
+
     #phishing:target ~ .pages .page-home,
     #malware:target  ~ .pages .page-home,
     #social:target   ~ .pages .page-home,
-    #wifi:target     ~ .pages .page-home { display:none; }
+    #wifi:target     ~ .pages .page-home { display: none; }
 
     /* Home hero & layout */
-    .hero { padding:72px 0 56px; background:
-      radial-gradient(600px 300px at 80% -10%, rgba(14,165,233,.16), transparent 60%),
-      radial-gradient(600px 300px at 60% -20%, rgba(139,92,246,.12), transparent 60%);
+    .hero {
+      padding: 72px 0 56px;
+      background:
+        radial-gradient(600px 300px at 80% -10%, rgba(14,165,233,.16), transparent 60%),
+        radial-gradient(600px 300px at 60% -20%, rgba(139,92,246,.12), transparent 60%);
     }
     .hero-inner { display:grid; grid-template-columns: 1.1fr .9fr; gap:24px; align-items:center; }
-    .eyebrow { color: var(--primary); font-weight:700; letter-spacing:.3px; margin:0; }
-    .title { font-size: clamp(28px, 5vw, 46px); line-height:1.15; margin:6px 0 10px; }
-    .lead { color:var(--muted); margin:0; max-width: 60ch; }
-    .hero-card { background: var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow: var(--shadow); padding:18px; }
+    .eyebrow { color: var(--primary); font-weight: 700; letter-spacing:.3px; margin: 0; }
+    .title { font-size: clamp(28px, 5vw, 46px); line-height: 1.15; margin: 6px 0 10px; }
+    .lead { color: var(--muted); margin: 0; max-width: 60ch; }
+    .hero-card {
+      background: var(--surface); border:1px solid var(--border); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow); padding: 18px;
+    }
 
-    .section { padding:56px 0; }
-    .grid-2 { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:16px; }
-    .grid-4 { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:16px; }
-    .card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow); padding:18px; }
-    .list { padding-left: 18px; margin:8px 0 0; }
-    .list li { margin:6px 0; }
+    .section { padding: 56px 0; }
+    .grid-2 { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+    .grid-4 { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; }
+    .card {
+      background: var(--surface); border:1px solid var(--border);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 18px;
+    }
+    .list { padding-left: 18px; margin: 8px 0 0; }
+    .list li { margin: 6px 0; }
 
     /* Topic cards */
-    .topic-card { display:block; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); box-shadow:var(--shadow); padding:18px; transition: transform .2s, box-shadow .2s, border-color .2s; }
+    .topic-card {
+      display:block; background: var(--surface); border:1px solid var(--border);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow);
+      padding: 18px; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
     .topic-card h3 { margin: 0 0 6px; }
-    .topic-card p { color:var(--muted); margin: 0 0 12px; }
-    .topic-card:hover { transform: translateY(-3px); border-color:#bae6fd; box-shadow: 0 16px 36px rgba(2,6,23,.12); }
+    .topic-card p { color: var(--muted); margin: 0 0 12px; }
+    .topic-card:hover {
+      transform: translateY(-3px);
+      border-color: #bae6fd;
+      box-shadow: 0 16px 36px rgba(2,6,23,.12);
+    }
 
     /* Button-styled links */
     .btn-link {
@@ -91,16 +143,30 @@
     .btn-row { display:flex; gap:8px; flex-wrap: wrap; }
 
     /* Topic page header + nav pills */
-    .page-hero { padding:36px 0 10px; background: var(--surface-alt); border-bottom:1px solid var(--border); }
-    .page-hero h1 { margin:0 0 6px; }
-    .topic-nav { display:flex; gap:10px; justify-content: space-between; margin:18px 0 0; }
-    .pill { display:inline-block; padding:10px 14px; border-radius:999px; background:#0ea5e922; color:#0b3a4a; border:1px solid #bae6fd; font-weight:700; }
+    .page-hero { padding: 36px 0 10px; background: var(--surface-alt); border-bottom: 1px solid var(--border); }
+    .page-hero h1 { margin: 0 0 6px; }
+
+    .topic-nav {
+      display:flex; gap: 10px; justify-content: space-between;
+      margin: 18px 0 0;
+    }
+    .pill {
+      display:inline-block; padding: 10px 14px; border-radius: 999px;
+      background: #0ea5e922; color: #0b3a4a; border: 1px solid #bae6fd; font-weight: 700;
+    }
     .pill.ghost { background: var(--surface); border-color: var(--border); color: var(--muted); }
 
-    .site-footer { padding:24px 0; color:var(--muted); text-align:center; border-top:1px solid var(--border); }
+    .site-footer { padding: 24px 0; color: var(--muted); text-align:center; border-top: 1px solid var(--border); }
 
-    @media (max-width: 980px){ .hero-inner { grid-template-columns: 1fr; } }
-    @media (max-width: 760px){ .grid-4 { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; } .nav { gap:6px; } }
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-inner { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px){
+      .grid-4 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .nav { gap: 6px; }
+    }
   </style>
 </head>
 <body>
@@ -116,7 +182,7 @@
     <div class="container header-inner">
       #homeCyber Safety</a>
       <nav class="nav" aria-label="Primary">
-        <a href="#phishing/a>
+        #phishingPhishing</a>
         #malwareMalware</a>
         #socialSocial Engineering</a>
         #wifiPublic Wi‑Fi Risks</a>
@@ -155,7 +221,9 @@
               <h3>Phishing</h3>
               <p>Spot fake emails, texts, and sites that try to steal your logins.</p>
               <div class="btn-row">
-                https://www.instagram.com/direct/t/1190549503006936/</a>
+                https://www.instagram.com/direct/t/1190549503006936/
+                  Open
+                </a>
                 #phishingLearn more</a>
               </div>
             </div>
@@ -165,8 +233,9 @@
               <h3>Malware</h3>
               <p>Understand ransomware, spyware, and avoiding unsafe downloads.</p>
               <div class="btn-row">
-                <!-- TODO: Replace with your real link -->
-                https://YOUR-LINK/malwareOpen</a>
+                https://www.instagram.com/direct/t/1190549503006936/
+                  Open
+                </a>
                 #malwareLearn more</a>
               </div>
             </div>
@@ -176,8 +245,9 @@
               <h3>Social Engineering</h3>
               <p>Protect yourself from tricks that target people, not systems.</p>
               <div class="btn-row">
-                <!-- TODO: Replace with your real link -->
-                https://www.w3schools.com/</a>
+                https://www.instagram.com/direct/t/1190549503006936/
+                  Open
+                </a>
                 #socialLearn more</a>
               </div>
             </div>
@@ -187,8 +257,9 @@
               <h3>Public Wi‑Fi Risks</h3>
               <p>Use public networks safely and avoid exposing your accounts.</p>
               <div class="btn-row">
-                <!-- TODO: Replace with your real link -->
-                <atps://YOUR-LINK/public-wifiOpen</a>
+                https://www.instagram.com/direct/t/1190549503006936/
+                  Open
+                </a>
                 #wifiLearn more</a>
               </div>
             </div>
