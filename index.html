@@ -1,382 +1,415 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!--
+    Cyber Safety — Single File (Home + 4 Topics)
+    Pages (hash-routed): #home, #phishing, #malware, #social, #wifi
+    Author: Ek Jun Chen (customize as you like)
+  -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cybersecurity Awareness</title>
-  <meta name="description" content="Learn cybersecurity basics, common threats, tips to protect yourself, and test your knowledge with a self-check quiz." />
+  <title>Cyber Safety — Learn • Spot • Protect</title>
+  <meta name="description" content="A simple, single-file site covering phishing, malware, social engineering, and public Wi‑Fi risks." />
+
   <style>
-  :root{
-    --bg: #0c1220;
-    --bg-alt: #101830;
-    --text: #e8edff;
-    --muted: #a6b0d8;
-    --accent: #5ac8fa;      /* cyan */
-    --accent-2: #7c5cff;    /* violet */
-    --card: #141c36;
-    --border: #21305e;
-    --danger: #ff5c7a;
-    --ok: #35d0a3;
-    --shadow: 0 12px 30px rgba(0,0,0,.25);
-  }
+    /* ---------------------------------
+       Design tokens
+       --------------------------------- */
+    :root{
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --surface-alt: #f1f5f9;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --primary: #0ea5e9;
+      --secondary: #8b5cf6;
+      --ok: #16a34a;
 
-  *{ box-sizing: border-box; }
-  html,body{
-    margin:0; padding:0; font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    color: var(--text);
-    background: radial-gradient(1200px 800px at 80% -10%, #182453 10%, transparent 60%), var(--bg);
-    scroll-behavior: smooth;
-  }
-
-  .container{ width: min(1120px, 92%); margin: 0 auto; }
-
-  /* Header */
-  .site-header{
-    position: sticky; top:0; z-index: 50;
-    background: rgba(12,18,32,.7); backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border);
-  }
-  .header-inner{ display:flex; align-items:center; justify-content:space-between; padding: 14px 0; }
-  .logo{ color: var(--text); font-weight: 800; text-decoration: none; letter-spacing:.2px; }
-  .nav{ display:flex; gap: 18px; }
-  .nav a{ color: var(--muted); text-decoration: none; padding: 8px 10px; border-radius:8px; }
-  .nav a:hover{ color: var(--text); background: rgba(90,200,250,.12); }
-
-  /* Mobile nav (CSS-only checkbox hack) */
-  #nav-toggle{ display:none; }
-  .hamburger{
-    display:none; font-size: 22px; background:none; color: var(--text);
-    border:1px solid var(--border); padding:6px 10px; border-radius:8px; cursor:pointer;
-  }
-  @media (max-width: 720px){
-    .nav{
-      display:none; position: absolute; top: 58px; right: 4%;
-      background: var(--bg-alt); padding: 10px; border:1px solid var(--border);
-      border-radius:10px; flex-direction: column; width: 220px;
+      --radius: 12px;
+      --radius-lg: 16px;
+      --shadow: 0 12px 30px rgba(2, 6, 23, .08);
+      --maxw: 1120px;
     }
-    #nav-toggle:checked ~ .nav{ display:flex; }
-    .hamburger{ display:inline-block; }
-  }
 
-  .hero{ padding: 72px 0 48px; }
-  .hero-inner{ display:grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; align-items:center; }
-  .hero h1{ font-size: clamp(28px, 5vw, 48px); margin:0 0 8px; }
-  .subtitle{ color: var(--muted); margin: 0 0 20px; max-width: 50ch; }
-  .cta-group{ display:flex; gap:12px; flex-wrap: wrap; }
-  .btn{ display:inline-block; text-decoration:none; padding:10px 16px; border-radius:10px; border:1px solid var(--border); transition: .2s transform ease, .2s background ease; }
-  .btn:hover{ transform: translateY(-2px); }
-  .btn.primary{ background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:white; border: none; }
-  .btn.ghost{ color: var(--text); background: transparent; }
+    /* ---------------------------------
+       Base
+       --------------------------------- */
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+    img, svg { max-width: 100%; height: auto; display: block; }
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(var(--maxw), 92%); margin: 0 auto; }
+    .muted { color: var(--muted); }
 
-  .hero-art{ display:flex; justify-content:center; align-items:center; }
-  .shield{
-    width: clamp(220px, 38vw, 340px); aspect-ratio: 1/1.1;
-    background: radial-gradient(circle at 30% 30%, #8fdcff, #5ac8fa 55%, #1d87b2 90%);
-    border-radius: 42% 42% 16% 16% / 34% 34% 60% 60%;
-    position: relative; box-shadow: var(--shadow); animation: float 6s ease-in-out infinite;
-  }
-  .lock-hole{
-    position: absolute; inset: 40% 36% 34% 36%;
-    background: var(--bg); border-radius: 16px; box-shadow: inset 0 0 0 6px #bfeaff;
-  }
-  @keyframes float{
-    0%,100%{ transform: translateY(0) rotate(0deg); }
-    50%{ transform: translateY(-10px) rotate(2deg); }
-  }
+    /* ---------------------------------
+       Header & Nav
+       --------------------------------- */
+    .site-header {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+    .header-inner {
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 12px 0;
+    }
+    .brand {
+      font-weight: 800; letter-spacing:.2px;
+      padding: 6px 8px; border-radius: 8px;
+    }
+    .nav { display:flex; gap: 10px; flex-wrap: wrap; }
+    .nav a {
+      color: var(--muted);
+      padding: 8px 10px; border-radius: 8px;
+      transition: background .2s ease, color .2s ease, transform .2s ease, border-color .2s ease;
+    }
+    .nav a:hover { color: var(--text); background: var(--surface-alt); transform: translateY(-1px); }
+    .nav a.active { color: var(--text); background: #e8f5ff; border: 1px solid #bae6fd; }
 
-  /* Sections */
-  .section{ padding: 64px 0; }
-  .section.alt{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0) 40%), var(--bg-alt); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
-  .section h2{ font-size: clamp(22px, 3.2vw, 32px); margin:0 0 18px; }
-  .section p{ color: var(--text); opacity:.95; }
+    /* ---------------------------------
+       “Pages” container & routing
+       --------------------------------- */
+    .pages { position: relative; }
+    .page {
+      display: none;
+      animation: fade .18s ease-in;
+    }
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(2px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-  .grid.two{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
-  .info-card{
-    background: var(--card); border:1px solid var(--border); border-radius: 14px; padding: 18px; box-shadow: var(--shadow);
-  }
-  .checklist{ padding-left: 18px; }
-  .checklist li{ margin: 8px 0; }
-  .checklist span{ color: #d7e4ff; font-weight: 600; }
+    /* Default page visible (home) */
+    .page-home { display: block; }
 
-  /* Accordion (CSS-only using details/summary) */
-  .accordion{ display:grid; gap: 10px; }
-  details{
-    background: #101a3b; border:1px solid var(--border); border-radius:12px; padding: 0;
-  }
-  summary{
-    list-style:none; cursor:pointer; padding: 12px 14px; display:flex; align-items:center; justify-content:space-between; color: var(--text);
-  }
-  summary::-webkit-details-marker{ display:none; }
-  .acc-icon{ margin-left: 12px; opacity:.9; }
-  details[open] summary .acc-icon{ transform: rotate(45deg); } /* plus to x */
-  .acc-panel{ padding: 12px 14px; background:#0d1633; border-top:1px solid var(--border); border-radius: 0 0 12px 12px; }
+    /* Show specific page when matching hash is targeted */
+    /* The anchors #home/#phishing/#malware/#social/#wifi are placed before .pages */
+    #home:target ~ .pages .page-home { display: block; }
+    #phishing:target ~ .pages .page-phishing { display: block; }
+    #malware:target  ~ .pages .page-malware  { display: block; }
+    #social:target   ~ .pages .page-social   { display: block; }
+    #wifi:target     ~ .pages .page-wifi     { display: block; }
 
-  /* Password tool (static tips only) */
-  .password-tool{ margin-top: 10px; }
-  .pwd-row{ display:flex; gap: 8px; }
-  input[type="password"], input[type="text"], textarea{
-    width:100%; padding: 10px 12px; border-radius: 10px; border:1px solid var(--border); background: #0a1230; color: var(--text);
-  }
-  input:focus, textarea:focus{ outline: 2px solid #5ac8fa55; border-color: #5ac8fa; }
-  .btn.tiny{ padding: 8px 10px; font-size: 13px; }
-  .hint{ color: var(--muted); font-size: 13px; margin:8px 0 4px; }
-  .tips{ margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
+    /* When any target other than #home is active, hide the default home page */
+    #phishing:target ~ .pages .page-home,
+    #malware:target  ~ .pages .page-home,
+    #social:target   ~ .pages .page-home,
+    #wifi:target     ~ .pages .page-home { display: none; }
 
-  /* Quiz (self-check) */
-  .quiz fieldset{ border:1px solid var(--border); border-radius: 12px; padding: 10px 14px; margin: 12px 0; background:#0f1838; }
-  .quiz label{ display:block; margin: 8px 0; }
-  .reveal{ margin-top:8px; }
-  .answer{ color: var(--ok); font-weight:700; }
-  .note{ color: var(--muted); }
-  .site-footer{ border-top: 1px solid var(--border); padding: 24px 0; color: var(--muted); text-align:center; }
+    /* ---------------------------------
+       Hero & Common layout
+       --------------------------------- */
+    .hero {
+      padding: 72px 0 56px;
+      background:
+        radial-gradient(600px 300px at 80% -10%, rgba(14,165,233,.16), transparent 60%),
+        radial-gradient(600px 300px at 60% -20%, rgba(139,92,246,.12), transparent 60%);
+    }
+    .hero-inner {
+      display:grid; grid-template-columns: 1.1fr .9fr; gap: 24px; align-items:center;
+    }
+    .eyebrow { color: var(--primary); font-weight: 700; letter-spacing:.3px; margin: 0; }
+    .title { font-size: clamp(28px, 5vw, 46px); line-height: 1.15; margin: 6px 0 10px; }
+    .lead { color: var(--muted); margin: 0; max-width: 60ch; }
+    .hero-card {
+      background: var(--surface); border:1px solid var(--border); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow); padding: 18px;
+    }
 
-  /* Responsive */
-  @media (max-width: 900px){
-    .hero-inner{ grid-template-columns: 1fr; text-align:center; }
-    .cta-group{ justify-content:center; }
-  }
-  @media (max-width: 720px){
-    .grid.two{ grid-template-columns: 1fr; }
-  }
+    .section { padding: 56px 0; }
+    .grid-2 { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+    .grid-4 { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; }
+    .card {
+      background: var(--surface); border:1px solid var(--border);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 18px;
+    }
+    .list { padding-left: 18px; margin: 8px 0 0; }
+    .list li { margin: 6px 0; }
+
+    .topic-card {
+      display:block; background: var(--surface); border:1px solid var(--border);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow);
+      padding: 18px; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .topic-card h3 { margin: 0 0 6px; }
+    .topic-card p { color: var(--muted); margin: 0 0 10px; }
+    .topic-card .more { color: var(--primary); font-weight: 700; }
+    .topic-card:hover {
+      transform: translateY(-3px);
+      border-color: #bae6fd;
+      box-shadow: 0 16px 36px rgba(2,6,23,.12);
+    }
+
+    .page-hero { padding: 36px 0 10px; background: var(--surface-alt); border-bottom: 1px solid var(--border); }
+    .page-hero h1 { margin: 0 0 6px; }
+
+    .topic-nav {
+      display:flex; gap: 10px; justify-content: space-between;
+      margin: 18px 0 0;
+    }
+    .pill {
+      display:inline-block; padding: 10px 14px; border-radius: 999px;
+      background: #0ea5e922; color: #0b3a4a; border: 1px solid #bae6fd; font-weight: 700;
+    }
+    .pill.ghost { background: var(--surface); border-color: var(--border); color: var(--muted); }
+
+    .site-footer { padding: 24px 0; color: var(--muted); text-align:center; border-top: 1px solid var(--border); }
+
+    /* ---------------------------------
+       Responsive
+       --------------------------------- */
+    @media (max-width: 980px){
+      .hero-inner { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 760px){
+      .grid-4 { grid-template-columns: 1fr; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .nav { gap: 6px; }
+    }
   </style>
 </head>
 <body>
-  <!-- Header / Nav -->
+  <!--
+    Invisible anchors to control which page is visible.
+    The CSS uses :target on these to switch views.
+  -->
+  <span id="home" aria-hidden="true"></span>
+  <span id="phishing" aria-hidden="true"></span>
+  <span id="malware" aria-hidden="true"></span>
+  <span id="social" aria-hidden="true"></span>
+  <span id="wifi" aria-hidden="true"></span>
+
+  <!-- Header (links point to the anchors above) -->
   <header class="site-header">
     <div class="container header-inner">
-      #homeCyberAware</a>
-
-      <!-- Mobile toggle -->
-      <input type="checkbox" id="nav-toggle" aria-label="Toggle menu" />
-      <label for="nav-toggle" class="hamburger" aria-hidden="true">☰</label>
-
+      #homeCyber Safety</a>
       <nav class="nav" aria-label="Primary">
-        #homeHome</a>
-        #basicsBasics</a>
-        #threatsThreats</a>
-        #protectProtect</a>
-        #quizQuiz</a>
-        #resourcesResources</a>
+        #phishingPhishing</a>
+        #malwareMalware</a>
+        #socialSocial Engineering</a>
+        #wifiPublic Wi‑Fi Risks</a>
       </nav>
     </div>
   </header>
 
-  <main id="home" class="hero">
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-text">
-          <h1>Stay Safe Online</h1>
-          <p class="subtitle">
-            Understand the risks, spot the scams, and protect your digital life.
-          </p>
-          <div class="cta-group">
-            #protectTop Tips</a>
-            <a class="btn ghost/a>
+  <!-- Pages container -->
+  <main class="pages">
+    <!-- HOME -->
+    <section class="page page-home">
+      <section class="hero">
+        <div class="container hero-inner">
+          <div>
+            <p class="eyebrow">Learn • Spot • Protect</p>
+            <h1 class="title">Stay safe online with clear, practical guides.</h1>
+            <p class="lead">
+              Explore the four key topics: phishing, malware, social engineering, and public Wi‑Fi risks.
+            </p>
+          </div>
+          <aside class="hero-card">
+            <h3 style="margin:0 0 6px;">What you’ll get</h3>
+            <ul class="list">
+              <li>Beginner‑friendly explanations</li>
+              <li>Actionable checklists</li>
+              <li>Mobile‑friendly layout</li>
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+          <h2>Explore the topics</h2>
+          <div class="grid-4" style="margin-top: 12px;">
+            #phishing
+              <h3>Phishing</h3>
+              <p>Spot fake emails, texts, and sites that try to steal your logins.</p>
+              <span class="more">Open →</span>
+            </a>
+
+            #malware
+              <h3>Malware</h3>
+              <p>Understand ransomware, spyware, and avoiding unsafe downloads.</p>
+              <span class="more">Open →</span>
+            </a>
+
+            #social
+              <h3>Social Engineering</h3>
+              <p>Protect yourself from tricks that target people, not systems.</p>
+              <span class="more">Open →</span>
+            </a>
+
+            #wifi
+              <h3>Public Wi‑Fi Risks</h3>
+              <p>Use public networks safely and avoid exposing your accounts.</p>
+              <span class="more">Open →</span>
+            </a>
           </div>
         </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="shield">
-            <div class="lock-hole"></div>
-          </div>
-        </div>
-      </div>
+      </section>
     </section>
 
-    <section id="basics" class="section">
-      <div class="container">
-        <h2>Cybersecurity Basics</h2>
-        <p>
-          Cybersecurity is about protecting systems, networks, and data from digital attacks. As a student or everyday user, you can reduce risk by following simple habits and staying alert to scams.
-        </p>
+    <!-- PHISHING -->
+    <section class="page page-phishing">
+      <section class="page-hero">
+        <div class="container">
+          <h1>Phishing</h1>
+          <p class="muted">Fraud messages that impersonate trusted sources to steal logins or money.</p>
+        </div>
+      </section>
 
-        <div class="grid two">
-          <article class="info-card">
-            <h3>Core Principles</h3>
-            <ul class="checklist">
-              <li><span>Confidentiality</span> — keep data private.</li>
-              <li><span>Integrity</span> — prevent unauthorized changes.</li>
-              <li><span>Availability</span> — ensure systems are up when needed.</li>
+      <section class="section">
+        <div class="container grid-2">
+          <article class="card">
+            <h2>How to spot it</h2>
+            <ul class="list">
+              <li>Urgent pressure (“act now or lose access”).</li>
+              <li>Look‑alike sender or domain (tiny typos, extra characters).</li>
+              <li>Links that don’t match the display text.</li>
+              <li>Unexpected attachments (ZIP, EXE, macro docs).</li>
             </ul>
           </article>
 
-          <article class="info-card">
-            <h3>Good Digital Hygiene</h3>
-            <ul class="checklist">
-              <li>Use strong, unique passwords.</li>
-              <li>Turn on multi-factor authentication (MFA).</li>
-              <li>Update software and apps promptly.</li>
+          <article class="card">
+            <h2>What to do</h2>
+            <ul class="list">
+              <li>Don’t click links; type the real URL or use a bookmark.</li>
+              <li>Verify through a contact method you find yourself.</li>
+              <li>Report phishing to your email provider and IT/security team.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <nav class="topic-nav container">
+        #malwareNext: Malware →</a>
+        #home← Back to Home</a>
+      </nav>
+    </section>
+
+    <!-- MALWARE -->
+    <section class="page page-malware">
+      <section class="page-hero">
+        <div class="container">
+          <h1>Malware</h1>
+          <p class="muted">Malicious software that can lock, spy, or damage your files and devices.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container grid-2">
+          <article class="card">
+            <h2>Common types</h2>
+            <ul class="list">
+              <li><strong>Ransomware:</strong> locks files and demands payment.</li>
+              <li><strong>Spyware/Keyloggers:</strong> steals passwords and data.</li>
+              <li><strong>Trojans:</strong> disguised as legitimate apps.</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h2>Prevention tips</h2>
+            <ul class="list">
+              <li>Install apps from trusted stores only.</li>
+              <li>Keep OS, browser, and security tools updated.</li>
+              <li>Be cautious with macros and unknown installers.</li>
               <li>Back up important files regularly.</li>
             </ul>
           </article>
         </div>
-      </div>
+      </section>
+
+      <nav class="topic-nav container">
+        #socialNext: Social Engineering →</a>
+        <a class="pill Home</a>
+      </nav>
     </section>
 
-    <!-- THREATS -->
-    <section id="threats" class="section alt">
-      <div class="container">
-        <h2>Common Threats</h2>
-
-        <div class="accordion">
-          <details>
-            <summary>
-              <span>Phishing</span>
-              <span class="acc-icon">+</span>
-            </summary>
-            <div class="acc-panel">
-              <p>Fraudulent messages pretending to be trusted sources to steal logins or money.</p>
-              <ul>
-                <li>Look for mismatched URLs, urgency, grammar mistakes, or unexpected attachments.</li>
-                <li>Verify using official channels (don’t use the links in the message).</li>
-              </ul>
-            </div>
-          </details>
-
-          <details>
-            <summary>
-              <span>Malware</span>
-              <span class="acc-icon">+</span>
-            </summary>
-            <div class="acc-panel">
-              <p>Malicious software (viruses, ransomware, spyware) that can damage or lock your files.</p>
-              <ul>
-                <li>Download only from trusted stores/sources.</li>
-                <li>Keep OS and antivirus up to date.</li>
-              </ul>
-            </div>
-          </details>
-
-          <details>
-            <summary>
-              <span>Social Engineering</span>
-              <span class="acc-icon">+</span>
-            </summary>
-            <div class="acc-panel">
-              <p>Manipulating people to bypass security (pretexting, baiting, tailgating).</p>
-              <ul>
-                <li>Slow down, verify identity, and follow procedures.</li>
-              </ul>
-            </div>
-          </details>
-
-          <details>
-            <summary>
-              <span>Public Wi‑Fi Risks</span>
-              <span class="acc-icon">+</span>
-            </summary>
-            <div class="acc-panel">
-              <p>Unencrypted networks can expose your traffic to eavesdropping.</p>
-              <ul>
-                <li>Avoid sensitive logins on open Wi‑Fi; use VPN where possible.</li>
-              </ul>
-            </div>
-          </details>
+    <!-- SOCIAL ENGINEERING -->
+    <section class="page page-social">
+      <section class="page-hero">
+        <div class="container">
+          <h1>Social Engineering</h1>
+          <p class="muted">Tricks that target human trust: impostors, fake support, urgent favors, and more.</p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="protect" class="section">
-      <div class="container">
-        <h2>Protect Yourself</h2>
-
-        <div class="grid two">
-          <article class="info-card">
-            <h3>Strong Passwords &amp; MFA</h3>
-            <p>Use at least 12–16 characters with a mix of letters, numbers, and symbols. Prefer a passphrase you can remember, and enable MFA everywhere.</p>
-
-            <div class="password-tool">
-              <label for="pwd">Try a password (no strength meter in CSS-only version):</label>
-              <div class="pwd-row">
-                <input id="pwd" type="password" placeholder="Type here…" />
-              </div>
-              <p class="hint">Tip: We never send your input anywhere (this page has no JavaScript).</p>
-              <ul class="tips">
-                <li>Use 3–4 random words (e.g., “planet-salsa-violin-cloud”).</li>
-                <li>Avoid common patterns like “1234”, “password”, or keyboard walks.</li>
-                <li>Don’t reuse passwords across accounts; use a password manager.</li>
-              </ul>
-            </div>
+      <section class="section">
+        <div class="container grid-2">
+          <article class="card">
+            <h2>Red flags</h2>
+            <ul class="list">
+              <li>Urgent requests for help, secrecy, or gift cards.</li>
+              <li>Requests for one‑time codes or passwords (legitimate orgs don’t ask).</li>
+              <li>Pressure to break procedure or skip verification.</li>
+            </ul>
           </article>
 
-          <article class="info-card">
-            <h3>Safe Browsing Checklist</h3>
-            <ul class="checklist">
-              <li>Check the URL (beware typos, extra characters, odd domains).</li>
-              <li>Look for HTTPS (padlock) but also verify the site name.</li>
-              <li>Don’t reuse passwords across accounts.</li>
-              <li>Keep OS/browser/plugins updated.</li>
-              <li>Back up files (e.g., cloud + external drive).</li>
+          <article class="card">
+            <h2>How to respond</h2>
+            <ul class="list">
+              <li>Pause and verify identity using a known contact method.</li>
+              <li>Follow official procedures; involve your IT/security team.</li>
+              <li>Document details if you need to report the attempt.</li>
             </ul>
           </article>
         </div>
-      </div>
+      </section>
+
+      <nav class="topic-nav container">
+        #wifiNext: Public Wi‑Fi Risks →</a>
+        #home← Back to Home</a>
+      </nav>
     </section>
 
-    <!-- QUIZ -->
-    <section id="quiz" class="section alt">
-      <div class="container">
-        <h2>Quick Phishing Quiz (Self‑Check)</h2>
-        <p>Pick the safest action in each scenario, then expand to reveal the answer.</p>
+    <!-- PUBLIC WIFI -->
+    <section class="page page-wifi">
+      <section class="page-hero">
+        <div class="container">
+          <h1>Public Wi‑Fi Risks</h1>
+          <p class="muted">Untrusted networks can expose your traffic to eavesdropping or tampering.</p>
+        </div>
+      </section>
 
-        <form class="quiz" aria-describedby="quiz-note">
-          <fieldset>
-            <legend>1) You receive an email “Your account will be closed in 24 hours! Click here.”</legend>
-            <label><input type="radio" name="q1" value="a" /> Click the link and log in urgently.</label>
-            <label><input type="radio" name="q1" value="b" /> Ignore email and do nothing.</label>
-            <label><input type="radio" name="q1" value="c" /> Visit the official site by typing the URL/bookmark to check.</label>
-            <details class="reveal">
-              <summary>Show answer</summary>
-              <p class="answer">Correct: Visit the official site by typing the URL/bookmark to check.</p>
-              <p class="note">Never use links in suspicious messages.</p>
-            </details>
-          </fieldset>
+      <section class="section">
+        <div class="container grid-2">
+          <article class="card">
+            <h2>Safer habits</h2>
+            <ul class="list">
+              <li>Avoid sensitive logins (email, banking) on open networks.</li>
+              <li>Prefer mobile data or use a trusted VPN.</li>
+              <li>Turn off auto‑connect and file sharing in public places.</li>
+            </ul>
+          </article>
 
-          <fieldset>
-            <legend>2) A friend sends a file you weren’t expecting via DM.</legend>
-            <label><input type="radio" name="q2" value="a" /> Open it to see what it is.</label>
-            <label><input type="radio" name="q2" value="b" /> Ask your friend on a different channel if they really sent it.</label>
-            <label><input type="radio" name="q2" value="c" /> Upload it to random online scanners.</label>
-            <details class="reveal">
-              <summary>Show answer</summary>
-              <p class="answer">Correct: Verify on a different channel before opening unexpected files.</p>
-              <p class="note">Accounts get compromised; confirm first.</p>
-            </details>
-          </fieldset>
+          <article class="card">
+            <h2>Signs of trouble</h2>
+            <ul class="list">
+              <li>Captive portal asks for your email password (not normal).</li>
+              <li>Certificate warnings or mismatched domains.</li>
+              <li>Frequent disconnects or strange redirects.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
 
-          <fieldset>
-            <legend>3) Public Wi‑Fi at a café asks you to log into your email.</legend>
-            <label><input type="radio" name="q3" value="a" /> Log in; it’s normal for free Wi‑Fi.</label>
-            <label><input type="radio" name="q3" value="b" /> Use mobile data or VPN; avoid sensitive logins on public Wi‑Fi.</label>
-            <label><input type="radio" name="q3" value="c" /> Use incognito mode; that’s enough.</label>
-            <details class="reveal">
-              <summary>Show answer</summary>
-              <p class="answer">Correct: Use mobile data or VPN; avoid sensitive logins on public Wi‑Fi.</p>
-              <p class="note">Incognito doesn’t encrypt traffic.</p>
-            </details>
-          </fieldset>
-          <p id="quiz-note" class="note">Scoring is manual in this no‑JavaScript version.</p>
-        </form>
-      </div>
-    </section>
-
-    <!-- RESOURCES -->
-    <section id="resources" class="section">
-      <div class="container">
-        <h2>Trusted Resources</h2>
-        <ul class="resources" style="padding-left:18px; list-style: disc; color: var(--muted);">
-          <li>https://staysafeonline.org/Stay Safe Online (NCA)</a></li>
-          <li>https://www.cisa.gov/secure-our-worldCISA — Secure Our World</a></li>
-          <li><a href/www.nc3.gov.my/Malaysia NC3 (Cyber Crime) — nc3.gov.my</a></li>
-          <li><a href="https://haveibeenpwned.comeen Pwned (breach check)</a></li>
-        </ul>
-        <p class="note">Tip: If you suspect phishing, report to your email provider and your campus IT/security team.</p>
-      </div>
+      <nav class="topic-nav container">
+        #home← Back to Home</a>
+        #phishingGo to: Phishing</a>
+      </nav>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container">
-      <p>© 2026 CyberAware • Learn. Spot. Protect.</p>
+      <p>© 2026 Cyber Safety • Learn • Spot • Protect</p>
     </div>
   </footer>
 </body>
