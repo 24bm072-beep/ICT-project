@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en">
 <head>
-  
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Cyber Safety — Learn • Spot • Protect</title>
@@ -38,7 +37,7 @@
     .container { width: min(var(--maxw), 92%); margin: 0 auto; }
     .muted { color: var(--muted); }
 
-    
+    /* Header */
     .site-header {
       position: sticky; top: 0; z-index: 50;
       background: rgba(255,255,255,.85);
@@ -62,6 +61,7 @@
     .nav a:hover { color: var(--text); background: var(--surface-alt); transform: translateY(-1px); }
     .nav a.active { color: var(--text); background: #e8f5ff; border: 1px solid #bae6fd; }
 
+    /* Pages */
     .pages { position: relative; }
     .page { display: none; animation: fade .18s ease-in; }
     @keyframes fade { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: translateY(0); } }
@@ -78,6 +78,7 @@
     #social:target   ~ .pages .page-home,
     #wifi:target     ~ .pages .page-home { display: none; }
 
+    /* Hero */
     .hero {
       padding: 72px 0 56px;
       background:
@@ -93,6 +94,7 @@
       box-shadow: var(--shadow); padding: 18px;
     }
 
+    /* Sections */
     .section { padding: 56px 0; }
     .grid-2 { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
     .grid-4 { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 16px; }
@@ -103,7 +105,7 @@
     .list { padding-left: 18px; margin: 8px 0 0; }
     .list li { margin: 6px 0; }
 
-    
+    /* Topic cards */
     .topic-card {
       display:block; background: var(--surface); border:1px solid var(--border);
       border-radius: var(--radius-lg); box-shadow: var(--shadow);
@@ -117,7 +119,7 @@
       box-shadow: 0 16px 36px rgba(2,6,23,.12);
     }
 
-    
+    /* Buttons */
     .btn-link {
       display:inline-block;
       padding: 10px 14px;
@@ -137,7 +139,7 @@
     }
     .btn-row { display:flex; gap:8px; flex-wrap: wrap; }
 
-    
+    /* Page nav */
     .page-hero { padding: 36px 0 10px; background: var(--surface-alt); border-bottom: 1px solid var(--border); }
     .page-hero h1 { margin: 0 0 6px; }
 
@@ -153,7 +155,6 @@
 
     .site-footer { padding: 24px 0; color: var(--muted); text-align:center; border-top: 1px solid var(--border); }
 
-    
     @media (max-width: 980px){
       .hero-inner { grid-template-columns: 1fr; }
     }
@@ -165,14 +166,15 @@
   </style>
 </head>
 <body>
-  
+
+  <!-- hash anchors used by CSS-only router -->
   <span id="home" aria-hidden="true"></span>
   <span id="phishing" aria-hidden="true"></span>
   <span id="malware" aria-hidden="true"></span>
   <span id="social" aria-hidden="true"></span>
   <span id="wifi" aria-hidden="true"></span>
 
- 
+  <!-- Header -->
   <header class="site-header">
     <div class="container header-inner">
       #homeCyber Safety</a>
@@ -185,9 +187,9 @@
     </div>
   </header>
 
-  
+  <!-- Pages -->
   <main class="pages">
-  
+    <!-- Home -->
     <section class="page page-home">
       <section class="hero">
         <div class="container hero-inner">
@@ -211,18 +213,20 @@
         <div class="container">
           <h2>Explore the topics</h2>
           <div class="grid-4" style="margin-top: 12px;">
+
             <!-- PHISHING CARD -->
             <div class="topic-card">
               <h3>Phishing</h3>
               <p>Spot fake emails, texts, and sites that try to steal your logins.</p>
               <div class="btn-row">
                 https://25gf040.github.io/HTML-FILES/
+                  Open Website
                 </a>
                 #phishingLearn more</a>
               </div>
             </div>
 
-            
+            <!-- MALWARE CARD -->
             <div class="topic-card">
               <h3>Malware</h3>
               <p>Understand ransomware, spyware, and avoiding unsafe downloads.</p>
@@ -234,6 +238,7 @@
               </div>
             </div>
 
+            <!-- SOCIAL ENGINEERING CARD -->
             <div class="topic-card">
               <h3>Social Engineering</h3>
               <p>Protect yourself from tricks that target people, not systems.</p>
@@ -245,21 +250,24 @@
               </div>
             </div>
 
+            <!-- PUBLIC WIFI CARD -->
             <div class="topic-card">
               <h3>Public Wi‑Fi Risks</h3>
               <p>Use public networks safely and avoid exposing your accounts.</p>
               <div class="btn-row">
-               https://www.aussiebroadband.com.au/blog/the-risks-of-public-wifi-and-how-to-protect-yourself/
+                <a class="btnussiebroadband.com.au/blog/the-risks-of-public-wifi-and-how-to-protect-yourself/
+                  Open
                 </a>
                 #wifiLearn more</a>
               </div>
             </div>
+
           </div>
         </div>
       </section>
     </section>
 
-   
+    <!-- PHISHING PAGE -->
     <section class="page page-phishing">
       <section class="page-hero">
         <div class="container">
@@ -289,11 +297,12 @@
         </div>
       </section>
       <nav class="topic-nav container">
-        #malwareNext: Malware →</a>
+        <a class="pill" href="#mal>
         #home← Back to Home</a>
       </nav>
     </section>
 
+    <!-- MALWARE PAGE -->
     <section class="page page-malware">
       <section class="page-hero">
         <div class="container">
@@ -324,9 +333,11 @@
       </section>
       <nav class="topic-nav container">
         #socialNext: Social Engineering →</a>
-        <a class="pill ghost" href    </nav>
+        #home← Back to Home</a>
+      </nav>
     </section>
 
+    <!-- SOCIAL ENGINEERING PAGE -->
     <section class="page page-social">
       <section class="page-hero">
         <div class="container">
@@ -355,11 +366,12 @@
         </div>
       </section>
       <nav class="topic-nav container">
-        <a class="pill"ic Wi‑Fi Risks →</a>
+        #wifiNext: Public Wi‑Fi Risks →</a>
         #home← Back to Home</a>
       </nav>
     </section>
 
+    <!-- PUBLIC WIFI PAGE -->
     <section class="page page-wifi">
       <section class="page-hero">
         <div class="container">
